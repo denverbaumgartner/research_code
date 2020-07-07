@@ -82,7 +82,15 @@ class PhD_applicant_organizer():
             # Save the credentials for the next run
             with open('token.pickle', 'wb') as token:
                 pickle.dump(creds, token)
-                
+        
+        # create a variable to store the credentials data 
+        self.creds = creds        
+        
     def data_collection(self):
         
-        
+        # call the build to access information within the google drive
+        service = build('drive', 'v3', credentials=creds)
+
+        # Call the Drive v3 API
+        results = service.files().list(
+                pageSize=10, fields="nextPageToken, files(id, name)").execute()
